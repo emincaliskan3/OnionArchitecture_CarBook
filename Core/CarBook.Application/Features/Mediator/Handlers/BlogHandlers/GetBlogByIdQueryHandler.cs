@@ -29,7 +29,8 @@ namespace CarBook.Application.Features.Mediator.Handlers.LocationHandlers
                 CategoryID = values.CategoryID,
                 CoverImageUrl = values.CoverImageUrl,
                 CreatedDate = values.CreatedDate,
-                Title = values.Title
+                Title = values.Title,
+                Description = values.Description
             };
         }
     }
