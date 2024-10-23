@@ -1,8 +1,10 @@
-﻿﻿<div class="sidebar-box ftco-animate">
+﻿@model List<GetByBlogIdTagCloudDto>﻿
+<div class="sidebar-box ftco-animate">
     <h3>Etiket Bulutu</h3>
     <div class="tagcloud">
-        
-            <a href="#" class="tag-cloud-link">Title</a>
-        
+        @foreach (var item in Model)
+        {
+            <a href="#" class="tag-cloud-link">@item.Title</a>
+        }
     </div>
 </div>
