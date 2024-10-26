@@ -17,7 +17,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7120/api/Testimonials");
+            var responseMessage = await client.GetAsync("https://localhost:7120/api/Statistics");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
