@@ -38,10 +38,8 @@ namespace CarBook.Persistence.Repositories.CarPricingRepositories
                             carPricing.PricingID,
                             carPricing.Amount
                         };
-
             // Sorguyu çalıştırarak veriyi çekiyoruz
             var data = query.ToList();
-
             // Model adına göre gruplama ve pivot işlemi yapılıyor
             var pivotData = data
                 .GroupBy(d => new { d.Model, d.BrandName, d.CoverImageUrl }) // Model, marka adı ve kapak resmi URL'sine göre gruplama
