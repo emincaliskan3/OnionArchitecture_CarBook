@@ -17,6 +17,25 @@ namespace CarBook.Persistence.Repositories.CarFeatureRepositories
         {
             _context = context;
         }
+
+        public void AddNewFeatureToAllCars(Feature feature)
+        {
+            var cars = _context.Cars.ToList();
+
+            foreach (var car in cars)
+            {
+                var carFeature = new CarFeature
+                {
+                    CarID = car.CarID,
+                    FeatureID = feature.FeatureID,
+                    Available = false
+                };
+                _context.CarFeatures.Add(carFeature);
+            }
+
+            _context.SaveChanges();
+        }
+
         public void ChangeCarFeatureAvailableToFalse(int id)
         {
             var values = _context.CarFeatures.Where(x => x.CarFeatureID == id).FirstOrDefault();
@@ -31,11 +50,6 @@ namespace CarBook.Persistence.Repositories.CarFeatureRepositories
             _context.SaveChanges();
         }
 
-        public void CreateCarFeatureByCar(CarFeature carFeature)
-        {
-            _context.CarFeatures.Add(carFeature);
-            _context.SaveChanges();
-        }
 
         public List<CarFeature> GetCarFeaturesByCarID(int carID)
         {

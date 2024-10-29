@@ -1,11 +1,12 @@
 ﻿using CarBook.Dto.CarFeatureDtos;
+using CarBook.Dto.FeatureDtos;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Route("Admin/[controller]/[action]")]
+    [Route("Admin/AdminCarFeatureDetail")]
     public class AdminCarFeatureDetailController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
@@ -13,7 +14,9 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         {
             _httpClientFactory = httpClientFactory;
         }
-        [HttpGet("{id}")]
+
+        [Route("Index/{id}")]
+        [HttpGet]
         public async Task<IActionResult> Index(int id)
         {
             var client = _httpClientFactory.CreateClient();
@@ -26,5 +29,29 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             }
             return View();
         }
+
+        [HttpPost]
+        [Route("Index/{id}")]
+        public async Task<IActionResult> Index(List<ResultCarFeatureByCarIdDto> resultCarFeatureByCarIdDto)
+        {
+
+            foreach (var item in resultCarFeatureByCarIdDto)
+            {
+                if (item.Available)
+                {
+                    var client = _httpClientFactory.CreateClient();
+                    await client.GetAsync("https://localhost:7120/api/CarFeatures/CarFeatureChangeAvailableToTrue?id=" + item.CarFeatureID);
+
+                }
+                else
+                {
+                    var client = _httpClientFactory.CreateClient();
+                    await client.GetAsync("https://localhost:7120/api/CarFeatures/CarFeatureChangeAvailableToFalse?id=" + item.CarFeatureID);
+                }
+            }
+            return RedirectToAction("Index", "AdminCar");
+        }
+
+
     }
 }
