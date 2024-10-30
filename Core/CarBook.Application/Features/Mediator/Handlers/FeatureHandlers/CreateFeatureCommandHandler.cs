@@ -1,23 +1,23 @@
 ﻿using CarBook.Application.Features.Mediator.Commands.FeatureCommands;
 using CarBook.Application.Interfaces;
-using CarBook.Application.Interfaces.CarFeatureInterfaces;
 using CarBook.Domain.Entities;
 using MediatR;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CarBook.Application.Features.Mediator.Handlers.FeatureHandlers
 {
     public class CreateFeatureCommandHandler : IRequestHandler<CreateFeatureCommand>
     {
-        private readonly IRepository<Feature> _repository;
-        private readonly ICarFeatureRepository _carFeatureRepository;
-        public CreateFeatureCommandHandler(IRepository<Feature> repository, ICarFeatureRepository carFeatureRepository)
+        private readonly IRepository<Feature> _featureRepository;
+        private readonly IRepository<Car> _carRepository;
+        private readonly IRepository<CarFeature> _carFeatureRepository;
+
+        public CreateFeatureCommandHandler(IRepository<Feature> featureRepository, IRepository<Car> carRepository, IRepository<CarFeature> carFeatureRepository)
         {
-            _repository = repository;
+            _featureRepository = featureRepository;
+            _carRepository = carRepository;
             _carFeatureRepository = carFeatureRepository;
         }
 
@@ -28,9 +28,21 @@ namespace CarBook.Application.Features.Mediator.Handlers.FeatureHandlers
                 Name = request.Name
             };
 
-            await _repository.CreateAsync(feature);
+            await _featureRepository.CreateAsync(feature);
 
-            _carFeatureRepository.AddNewFeatureToAllCars(feature);
+            var cars = await _carRepository.GetAllAsync();
+            foreach (var car in cars)
+            {
+                var carFeature = new CarFeature
+                {
+                    CarID = car.CarID,
+                    FeatureID = feature.FeatureID,
+                    Available = false
+                };
+
+                await _carFeatureRepository.CreateAsync(carFeature);
+            }
+
         }
     }
 }
