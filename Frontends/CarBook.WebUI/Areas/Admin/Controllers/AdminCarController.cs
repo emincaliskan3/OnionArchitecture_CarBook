@@ -5,8 +5,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Text;
 
-namespace CarBook.WebUI.Controllers
+namespace CarBook.WebUI.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    [Route("Admin/[controller]/[action]")]
     public class AdminCarController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
@@ -53,21 +55,22 @@ namespace CarBook.WebUI.Controllers
             var responseMessage = await client.PostAsync("https://localhost:7120/api/Cars", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "AdminCar", new { area = "Admin" });
             }
             return View();
         }
+        [HttpGet("{id}")]
         public async Task<IActionResult> RemoveCar(int id)
         {
             var client = _httpClientFactory.CreateClient();
             var responseMessage = await client.DeleteAsync($"https://localhost:7120/api/Cars/{id}");
             if (responseMessage.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "AdminCar", new { area = "Admin" });
             }
             return View();
         }
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult> UpdateCar(int id)
         {
             var client = _httpClientFactory.CreateClient();
@@ -94,7 +97,7 @@ namespace CarBook.WebUI.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost("{id}")]
         public async Task<IActionResult> UpdateCar(UpdateCarDto updateCarDto)
         {
             var client = _httpClientFactory.CreateClient();
@@ -103,7 +106,7 @@ namespace CarBook.WebUI.Controllers
             var responseMessage = await client.PutAsync("https://localhost:7120/api/Cars/", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "AdminCar", new { area = "Admin" });
             }
             return View();
         }

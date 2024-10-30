@@ -49,7 +49,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
                     await client.GetAsync("https://localhost:7120/api/CarFeatures/CarFeatureChangeAvailableToFalse?id=" + item.CarFeatureID);
                 }
             }
-            return RedirectToAction("Index", "AdminCar");
+            return RedirectToAction("Index", "AdminCar", new { area = "Admin" });
         }
 
 

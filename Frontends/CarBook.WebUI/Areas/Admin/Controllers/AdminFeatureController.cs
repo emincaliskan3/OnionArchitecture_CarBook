@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
 
-namespace CarBook.WebUI.Controllers
+namespace CarBook.WebUI.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    [Route("Admin/[controller]/[action]")]
     public class AdminFeatureController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
@@ -40,23 +42,24 @@ namespace CarBook.WebUI.Controllers
             var responseMessage = await client.PostAsync("https://localhost:7120/api/Features", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "AdminFeature", new { area = "Admin" });
             }
             return View();
         }
 
+        [HttpGet("{id}")]
         public async Task<IActionResult> RemoveFeature(int id)
         {
             var client = _httpClientFactory.CreateClient();
             var responseMessage = await client.DeleteAsync($"https://localhost:7120/api/Features/{id}");
             if (responseMessage.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "AdminFeature", new { area = "Admin" });
             }
             return View();
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult> UpdateFeature(int id)
         {
             var client = _httpClientFactory.CreateClient();
@@ -70,7 +73,7 @@ namespace CarBook.WebUI.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost("{id}")]
         public async Task<IActionResult> UpdateFeature(UpdateFeatureDto updateFeatureDto)
         {
             var client = _httpClientFactory.CreateClient();
@@ -79,7 +82,7 @@ namespace CarBook.WebUI.Controllers
             var responseMessage = await client.PutAsync("https://localhost:7120/api/Features/", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "AdminFeature", new { area = "Admin" });
             }
             return View();
         }
