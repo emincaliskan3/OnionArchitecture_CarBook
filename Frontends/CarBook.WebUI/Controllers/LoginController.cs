@@ -65,7 +65,7 @@ namespace CarBook.WebUI.Controllers
         public async Task<IActionResult> LogOutAsync()
         {
             await HttpContext.SignOutAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Login");
         }
     }
 }
