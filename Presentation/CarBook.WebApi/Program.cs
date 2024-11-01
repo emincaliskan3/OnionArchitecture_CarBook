@@ -39,6 +39,7 @@ using CarBook.Application.Tools;
 using CarBook.WebApi.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddHttpClient();
 
 builder.Services.AddCors(opt =>
 {

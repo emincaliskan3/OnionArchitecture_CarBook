@@ -1,0 +1,51 @@
+﻿@model List<ResultTagCloudDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    int count = 0;
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Etiket Bulut Listesi</h4>
+                        <p class="card-subtitle mb-4">
+                            Bloglara ait etiket bulutu ilgili işlemlerin gerçekleştirileceği sayfadır. Etiket girişi yaparken bilgileri eksiksiz girmeye özen gösterelim.
+                        </p>
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Etiket Başlığı</th>
+                                        <th>Blog ID</th>
+                                        <th>Sil</th>
+                                        <th>Güncelle</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        count++;
+                                        <tr>
+                                            <td>@count</td>
+                                            <td>@item.Title</td>
+                                            <td>@item.BlogID</td>
+                                            <td><a href="/Admin/AdminTagCloud/RemoveTagCloud/@item.TagCloudID" class="btn btn-outline-danger">Sil</a></td>
+                                            <td><a href="/Admin/AdminTagCloud/UpdateTagCloud/@item.TagCloudID" class="btn btn-outline-success">Güncelle</a></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <a href="/Admin/AdminTagCloud/CreateTagCloud" class="btn btn-outline-primary">Yeni Etiket Bulutu Girişi</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
