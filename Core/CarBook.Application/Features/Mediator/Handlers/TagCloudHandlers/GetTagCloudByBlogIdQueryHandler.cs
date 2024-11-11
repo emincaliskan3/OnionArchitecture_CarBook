@@ -25,6 +25,7 @@ namespace CarBook.Application.Features.Mediator.Handlers.TagCloudHandlers
                 Title = x.Title,
                 TagCloudID = x.TagCloudID,
                 BlogID = x.BlogID
+
             }).ToList();
         }
     }
